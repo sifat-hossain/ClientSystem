@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,14 +11,70 @@ namespace ClientSystem.Controllers
     public class UserProfileController : Controller
     {
         private ClientSystemEntities db = new ClientSystemEntities();
+        PasswordEncryptDecrypt PasswordEncryptDecrypt = new PasswordEncryptDecrypt();
         // GET: UserProfile
         public ActionResult Index()
         {
-            return View();
+            return View(db.UserProfiles.ToList());
         }
 
         public ActionResult Create()
         {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "UserId,UserFirstName,UserLastName,UaserAddress,UserPhone,UserEmail,UserDOB,UserPassword")] UserProfile userProfile)
+        {
+            if(ModelState.IsValid)
+            {
+                userProfile.UserPassword = PasswordEncryptDecrypt.Encrypt(userProfile.UserPassword, "sblw-3hn8-sqoy19");
+                db.UserProfiles.Add(userProfile);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult CheckEmail(string email)
+        {
+           
+            bool isValid = db.UserProfiles.ToList().Exists(p => p.UserEmail.Equals(email, StringComparison.CurrentCultureIgnoreCase));
+            return Json(isValid);
+        }
+
+        public ActionResult ChangePassword(int id)
+        {
+            UserProfile userProfile = db.UserProfiles.Find(id);
+            return View(userProfile);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword([Bind(Include = "UserId,UserFirstName,UserLastName,UaserAddress,UserPhone,UserEmail,UserDOB,UserPassword")] UserProfile userProfile,string PreviousPassword,string NewPassword,string ConfirmPassword)
+        {
+            var password = PasswordEncryptDecrypt.Decrypt(userProfile.UserPassword, "sblw-3hn8-sqoy19");
+            if (PreviousPassword == password)
+            {
+                if (NewPassword == ConfirmPassword)
+                {
+                    userProfile.UserPassword = NewPassword;
+                    db.Entry(userProfile).State = EntityState.Modified;
+                    db.SaveChanges();
+                    ViewBag.Message = "Your Password Successfully changed";
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Message = "Your New Password and Confirm Password is not matched";
+                    return View(userProfile);
+                }
+            }
+            else
+            {
+                ViewBag.Message = "Your Previous Password is not matched";
+                return View(userProfile);
+            }
             return View();
         }
     }
