@@ -3,8 +3,8 @@
     ViewBag.Title = "Login";
 }
 
-<h2>Login</h2>
-
+<br />
+<br />
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -69,11 +69,11 @@
             success: function (response) {
 
                 if (response) {
-
-                    alert("Incorrect Email or Password");
+                    alert("Successfully login");
+                    window.location="/UserProfile/Details"
                 }
                 else {
-                    alert("Successfully login");
+                    alert("Incorrect Email or Password");
                 }
             }
         });

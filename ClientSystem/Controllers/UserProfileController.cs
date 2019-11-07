@@ -11,11 +11,19 @@ namespace ClientSystem.Controllers
     public class UserProfileController : Controller
     {
         private ClientSystemEntities db = new ClientSystemEntities();
-        PasswordEncryptDecrypt PasswordEncryptDecrypt = new PasswordEncryptDecrypt();
+      
         // GET: UserProfile
         public ActionResult Index()
         {
-            return View(db.UserProfiles.ToList());
+            var value = Session["name"];
+            if (value!=null && value.ToString() == "admin")
+            {
+                return View(db.UserProfiles.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
         }
 
         public ActionResult Create()
@@ -44,10 +52,18 @@ namespace ClientSystem.Controllers
             return Json(isValid);
         }
 
-        public ActionResult ChangePassword(int id)
+        public ActionResult ChangePassword(int? id)
         {
-            UserProfile userProfile = db.UserProfiles.Find(id);
-            return View(userProfile);
+            if (Session["id"] != null && Session["id"].ToString() != "admin")
+            {
+                id = Convert.ToInt16(Session["id"]);
+                UserProfile userProfile = db.UserProfiles.Find(id);
+                return View(userProfile);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -76,6 +92,20 @@ namespace ClientSystem.Controllers
                 return View(userProfile);
             }
             
+        }
+
+        public ActionResult Details(int? id)
+        {
+            if (Session["id"] != null && Session["id"].ToString()!= "admin")
+            {
+                id = Convert.ToInt32(Session["id"]);
+                UserProfile userProfile = db.UserProfiles.Find(id);
+                return View(userProfile);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
         }
     }
 }

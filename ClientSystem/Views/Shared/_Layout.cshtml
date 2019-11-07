@@ -21,45 +21,47 @@
 
     <div class="wrapper">
         <header class="main-header">
-
-            <!-- Logo -->
-            <a href="#" class="logo">
-                @*<!-- mini logo for sidebar mini 50x50 pixels -->
-                    <span class="logo-mini"><b>A</b>LT</span>
-                    <!-- logo for regular state and mobile devices -->
-                    <span class="logo-lg"><b>Admin</b>LTE</span>*@
-            </a>
-
-            <!-- Header Navbar: style can be found in header.less -->
+            <div href="" class="logo">
+               
+            </div>
             <nav class="navbar navbar-static-top">
-                <!-- Sidebar toggle button-->
+
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu">
                     <span class="sr-only"></span>
                 </a>
-                <!-- Navbar Right Menu -->
+
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                        <!-- Messages: style can be found in dropdown.less-->
 
-                        <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        @if (Session["id"] != null)
+                        {
+                            <li class="dropdown user user-menu">
 
-                                <span class="hidden-xs">Alexander Pierce <i class=" fa fa-angle-down"></i></span>
-                            </a>
-                            <ul class="dropdown-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="hidden-xs">@Session["name"].ToString()  <i class=" fa fa-angle-down"></i></span>
+                                </a>
+                                <ul class="dropdown-menu">
 
 
-                                <li class="user-footer">
-                                    <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                    </div>
-                                    <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sig out</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <!-- Control Sidebar Toggle Button -->
+                                    <li class="user-footer">
+                                        <div class="pull-left">
+                                            @if (Session["id"].ToString() != "admin")
+                                            {
+                                                <a href="/UserProfile/ChangePassword" class="btn btn-default btn-flat">Change Password</a>
+                                            }
+                                        </div>
+                                        <div class="pull-right">
+                                            @using (Html.BeginForm("Logout", "Login", FormMethod.Post, new { id = "logout" }))
+                                            {
+                                                <a href="javascript:document.getElementById('logout').submit()" class="btn btn-default btn-flat">Sign out</a>
+                                            }
+
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+
 
                     </ul>
                 </div>
@@ -69,7 +71,20 @@
 
         <aside class="main-sidebar">
 
-            <section class="sidebar"></section>
+            <section class="sidebar">
+                <ul class="sidebar-menu" data-widget="tree">
+                    @if (Session["id"] != null && Session["id"].ToString() != "admin")
+                    {                        
+                        <li><a href="~/UserProfile/Details"><span><i class="glyphicon glyphicon-book"></i> Profile Page</span></a></li>
+                        <li><a href="~/UserProfile/ChangePassword">Change Password</a></li>
+                    }
+                    @if (Session["id"] != null && Session["id"].ToString() == "admin")
+                    {
+                        <li><a href="~/UserProfile/Index"><i class="glyphicon glyphicon-book"></i> User List</a></li>
+                        
+                    }
+                </ul>
+            </section>
 
         </aside>
 

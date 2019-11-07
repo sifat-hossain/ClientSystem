@@ -42,5 +42,11 @@ namespace ClientSystem.Controllers
             }          
             return Json(value);
         }
+        [HttpPost]
+        public ActionResult Logout()
+        {
+            Session.Abandon();
+            return RedirectToAction("Login", "Login");
+        }
     }
 }
