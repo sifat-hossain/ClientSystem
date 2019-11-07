@@ -58,7 +58,7 @@ namespace ClientSystem.Controllers
             {
                 if (NewPassword == ConfirmPassword)
                 {
-                    userProfile.UserPassword = NewPassword;
+                    userProfile.UserPassword =PasswordEncryptDecrypt.Encrypt(NewPassword, "sblw-3hn8-sqoy19");
                     db.Entry(userProfile).State = EntityState.Modified;
                     db.SaveChanges();
                     ViewBag.Message = "Your Password Successfully changed";
@@ -75,7 +75,7 @@ namespace ClientSystem.Controllers
                 ViewBag.Message = "Your Previous Password is not matched";
                 return View(userProfile);
             }
-            return View();
+            
         }
     }
 }
