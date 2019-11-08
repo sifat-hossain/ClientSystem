@@ -68,9 +68,7 @@
 
             </nav>
         </header>
-
         <aside class="main-sidebar">
-
             <section class="sidebar">
                 <ul class="sidebar-menu" data-widget="tree">
                     @if (Session["id"] != null && Session["id"].ToString() != "admin")
@@ -85,9 +83,7 @@
                     }
                 </ul>
             </section>
-
         </aside>
-
         <div class="content-wrapper" style="margin-top:-20px!important">
             @RenderBody()
             <hr />
@@ -101,19 +97,14 @@
     <script src="~/Scripts/jquery.min.js"></script>
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="~/Scripts/jquery.dataTables.js"></script>
-
     <script type="text/javascript" language="javascript" class="init">
         $(document).ready(function () {
             $('#table').DataTable();
         });
     </script>
-
-
-
-    <script src="~/Scripts/bootstrap.min.js"></script>
+ <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/adminlte.min.js"></script>
     <script src="~/Scripts/dashboard2.js"></script>
-    <script src="~/Scripts/demo.js"></script>>
-    
+    <script src="~/Scripts/demo.js"></script>>   
 </body>
 </html>

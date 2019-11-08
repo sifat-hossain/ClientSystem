@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -56,7 +57,7 @@ namespace ClientSystem.Controllers
         {
             if (Session["id"] != null && Session["id"].ToString() != "admin")
             {
-                id = Convert.ToInt16(Session["id"]);
+                id = Convert.ToInt32(Session["id"]);
                 UserProfile userProfile = db.UserProfiles.Find(id);
                 return View(userProfile);
             }
@@ -78,7 +79,7 @@ namespace ClientSystem.Controllers
                     db.Entry(userProfile).State = EntityState.Modified;
                     db.SaveChanges();
                     ViewBag.Message = "Your Password Successfully changed";
-                    return View();
+                    return RedirectToAction("Details");
                 }
                 else
                 {

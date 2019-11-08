@@ -14,10 +14,12 @@ namespace ClientSystem.Models
     {
         [Required]
         [DataType(DataType.Text)]
+        [StringLength(10,ErrorMessage ="Please Insert a valid Name",MinimumLength =1)]
         public string UserFirstName { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
+        [StringLength(10, ErrorMessage = "Please Insert a valid Name", MinimumLength = 1)]
         public string UserLastName { get; set; }
 
         [Required]
@@ -26,6 +28,7 @@ namespace ClientSystem.Models
 
         [Required]
         [DataType(DataType.PhoneNumber)]
+       
         public int UserPhone { get; set; }
 
         [Required]

@@ -66,7 +66,7 @@
                             <div class="form-group">
                                 @Html.Label("Date of Birth", htmlAttributes: new { @class = "control-label col-md-4" })
                                 <div>
-                                    @Html.EditorFor(model => model.UserDOB, new { htmlAttributes = new { @class = "form-control",@min = "01/01/2006", @max = Convert.ToString(System.DateTime.Now) } })
+                                    @Html.EditorFor(model => model.UserDOB, new { htmlAttributes = new { @class = "form-control",@min = "01/01/1980", @max = Convert.ToString(System.DateTime.Now) } })
                                     @Html.ValidationMessageFor(model => model.UserDOB, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -108,8 +108,7 @@
             dataType: "json",
             success: function (response) {
                 var message = $("#message");
-                if (response) {
-                   
+                if (response) {                   
                     message.css("color", "Red");
                     message.html("This Email is Already Registered");
                 }
@@ -117,7 +116,6 @@
             }
         });
     };
-
     function ClearMessage() {
         $("#message").html("");
     };

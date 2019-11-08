@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using ClientSystem.Models;
 
 namespace ClientSystem.Controllers
@@ -26,6 +27,7 @@ namespace ClientSystem.Controllers
                 value = true;
                 Session["id"] = "admin";
                 Session["name"] = "admin";
+                
             }
             else
             {
@@ -42,10 +44,26 @@ namespace ClientSystem.Controllers
             }          
             return Json(value);
         }
+        public ActionResult Location()
+        {
+            if (Session["id"].ToString() != "admin")
+            {
+                return RedirectToAction("Details","UserProfile");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+          
+        }
         [HttpPost]
         public ActionResult Logout()
         {
+            FormsAuthentication.SignOut();
+           
             Session.Abandon();
+            Response.Cookies.Clear();          
+            Session["id"] = null;
             return RedirectToAction("Login", "Login");
         }
     }
