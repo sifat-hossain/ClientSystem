@@ -19,6 +19,7 @@ namespace ClientSystem.Controllers
             var value = Session["name"];
             if (value!=null && value.ToString() == "admin")
             {
+                
                 return View(db.UserProfiles.ToList());
             }
             else
@@ -40,7 +41,7 @@ namespace ClientSystem.Controllers
                 userProfile.UserPassword = PasswordEncryptDecrypt.Encrypt(userProfile.UserPassword, "sblw-3hn8-sqoy19");
                 db.UserProfiles.Add(userProfile);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return Content("<script language='javascript' type='text/javascript'>alert('Your Registration is Complete. Please Login'); window.location='/Login/Login/'</script>");
             }
             return View();
         }
@@ -49,7 +50,7 @@ namespace ClientSystem.Controllers
         public JsonResult CheckEmail(string email)
         {
            
-            bool isValid = db.UserProfiles.ToList().Exists(p => p.UserEmail.Equals(email, StringComparison.CurrentCultureIgnoreCase));
+            bool isValid = db.UserProfiles.ToList().Exists(p => p.UserEmail.Equals(email));
             return Json(isValid);
         }
 
@@ -78,8 +79,7 @@ namespace ClientSystem.Controllers
                     userProfile.UserPassword =PasswordEncryptDecrypt.Encrypt(NewPassword, "sblw-3hn8-sqoy19");
                     db.Entry(userProfile).State = EntityState.Modified;
                     db.SaveChanges();
-                    ViewBag.Message = "Your Password Successfully changed";
-                    return RedirectToAction("Details");
+                    return Content("<script language='javascript' type='text/javascript'>alert('Your Password is Successfully Changed'); window.location='/UserProfile/Details/'</script>");
                 }
                 else
                 {
